@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -41,6 +41,7 @@ public class ModManager
 	public final AutoMineMod autoMineMod = new AutoMineMod();
 	public final AutoRespawnMod autoRespawnMod = new AutoRespawnMod();
 	public final AutoSignMod autoSignMod = new AutoSignMod();
+	public final AutoSplashPotMod autosplashpotMod = new AutoSplashPotMod();
 	public final AutoSprintMod autoSprintMod = new AutoSprintMod();
 	public final AutoStealMod autoStealMod = new AutoStealMod();
 	public final AutoSwitchMod autoSwitchMod = new AutoSwitchMod();
