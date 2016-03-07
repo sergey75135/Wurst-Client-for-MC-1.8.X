@@ -46,7 +46,6 @@ public class AutoSoupMod extends Mod implements UpdateListener
 				health = (float)getValue();
 			}
 		});
-		
 	}
 	
 	@Override
