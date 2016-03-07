@@ -53,7 +53,9 @@ public class CheckboxSetting implements NavigatorSetting
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		String fullName = featureName + " " + name;
-		String command = ".setcheckbox " + fullName.toLowerCase() + " ";
+		String command =
+			".setcheckbox " + featureName.toLowerCase() + " "
+				+ name.toLowerCase().replace(" ", "_") + " ";
 		
 		possibleKeybinds.add(new PossibleKeybind(command + "toggle", "Toggle "
 			+ fullName));

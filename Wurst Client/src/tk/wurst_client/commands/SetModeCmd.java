@@ -42,7 +42,7 @@ public class SetModeCmd extends Cmd
 		
 		// find setting
 		NavigatorSetting setting = null;
-		String settingName = args[1];
+		String settingName = args[1].replace("_", " ");
 		for(NavigatorSetting featureSetting : feature.getSettings())
 		{
 			if(featureSetting.getName().equalsIgnoreCase(settingName))

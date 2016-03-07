@@ -16,7 +16,8 @@ import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 
 import com.google.gson.JsonObject;
 
-public abstract class SliderSetting extends BasicSlider implements NavigatorSetting
+public abstract class SliderSetting extends BasicSlider implements
+	NavigatorSetting
 {
 	public SliderSetting()
 	{
@@ -73,7 +74,9 @@ public abstract class SliderSetting extends BasicSlider implements NavigatorSett
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		String fullName = featureName + " " + getText();
-		String command = ".setslider " + fullName.toLowerCase() + " ";
+		String command =
+			".setslider " + featureName.toLowerCase() + " "
+				+ getText().toLowerCase().replace(" ", "_") + " ";
 		
 		possibleKeybinds.add(new PossibleKeybind(command + "more", "Increase "
 			+ fullName));
