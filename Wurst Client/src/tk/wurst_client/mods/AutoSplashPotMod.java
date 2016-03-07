@@ -16,7 +16,6 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.BlockPos;
 
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
@@ -61,7 +60,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		if(pots() == 0)
 			return;
 		
-		if(mc.thePlayer.getHealth() < health && hasTimePassedM(200))
+		if(mc.thePlayer.getHealth() < health && hasTimePassedM(100))
 			if(hasHotbarPots())
 			{
 				throwPot();
@@ -162,8 +161,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 					sendQueue.addToSendQueue(new C09PacketHeldItemChange(
 						index - 36));
 					mc.playerController.updateController();
-					sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
-						new BlockPos(-1, -1, -1), -1, stack, 0.0F, 0.0F, 0.0F));
+					sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(stack));
 					sendQueue.addToSendQueue(new C09PacketHeldItemChange(
 						oldslot));
 					sendQueue
