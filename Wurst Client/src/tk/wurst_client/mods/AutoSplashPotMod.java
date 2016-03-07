@@ -26,7 +26,7 @@ import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
 
 @Info(category = Category.COMBAT,
-	description = "Automatically use splash healing potions.",
+	description = "Automatically throws splash healing potions if your health is below the set value.",
 	name = "AutoSplashPot",
 	tags = "AutoPotion,auto potion,auto splash potion")
 public class AutoSplashPotMod extends Mod implements UpdateListener
