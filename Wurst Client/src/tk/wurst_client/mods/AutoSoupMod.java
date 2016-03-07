@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Items;
@@ -64,7 +65,7 @@ public class AutoSoupMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		// check if no container is open
-		if(mc.currentScreen instanceof GuiContainer)
+		if(mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof GuiInventory))
 			return;
 		
 		EntityPlayerSP player = mc.thePlayer;

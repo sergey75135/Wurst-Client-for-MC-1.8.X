@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
@@ -60,7 +61,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		updateMS();
 		
 		// check if no container is open
-		if(mc.currentScreen instanceof GuiContainer)
+		if(mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof GuiInventory))
 			return;
 		
 		// check if health is low
