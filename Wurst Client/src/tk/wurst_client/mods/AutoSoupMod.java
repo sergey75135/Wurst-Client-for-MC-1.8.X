@@ -113,6 +113,12 @@ public class AutoSoupMod extends Mod implements UpdateListener
 			playerController.windowClick(0, soupInInventory, 0, 1, player);
 	}
 	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
 	private int findSoup(int startSlot, int endSlot)
 	{
 		for(int i = startSlot; i < endSlot; i++)

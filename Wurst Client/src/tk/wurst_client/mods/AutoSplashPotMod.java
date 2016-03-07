@@ -71,6 +71,12 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		
 	}
 	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
 	private boolean isHealthPot(ItemStack stack)
 	{
 		if(stack == null)
