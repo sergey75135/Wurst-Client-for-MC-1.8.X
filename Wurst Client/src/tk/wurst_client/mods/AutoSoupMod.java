@@ -46,7 +46,6 @@ public class AutoSoupMod extends Mod implements UpdateListener
 				health = (float)getValue();
 			}
 		});
-		
 	}
 	
 	@Override
@@ -112,6 +111,12 @@ public class AutoSoupMod extends Mod implements UpdateListener
 		}else
 			// move soup in inventory to hotbar
 			playerController.windowClick(0, soupInInventory, 0, 1, player);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	private int findSoup(int startSlot, int endSlot)
