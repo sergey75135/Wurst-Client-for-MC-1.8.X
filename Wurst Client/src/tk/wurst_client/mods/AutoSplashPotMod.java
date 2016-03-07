@@ -7,8 +7,9 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C03PacketPlayer;
@@ -30,7 +31,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	tags = "AutoPotion,auto potion,auto splash potion")
 public class AutoSplashPotMod extends Mod implements UpdateListener
 {
-	public float health = 20F;
+	public float health = 18F;
 	
 	@Override
 	public void initSettings()
@@ -55,18 +56,52 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
+		// update timer
 		updateMS();
 		
-		if(pots() == 0)
+		// check if no container is open
+		if(mc.currentScreen instanceof GuiContainer)
 			return;
 		
-		if(mc.thePlayer.getHealth() < health && hasTimePassedM(100))
-			if(hasHotbarPots())
+		// check if health is low
+		if(mc.thePlayer.getHealth() >= health)
+			return;
+		
+		// find health potions
+		int potionInInventory = findPotion(9, 36);
+		int potionInHotbar = findPotion(36, 45);
+		
+		// check if any potion was found
+		if(potionInInventory == -1 && potionInHotbar == -1)
+			return;
+		
+		if(hasTimePassedM(250))
+			if(potionInHotbar != -1)
 			{
-				throwPot();
+				// throw potion in hotbar
+				int oldSlot = mc.thePlayer.inventory.currentItem;
+				NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
+				sendQueue
+					.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
+						mc.thePlayer.rotationYaw, 90.0F, mc.thePlayer.onGround));
+				sendQueue.addToSendQueue(new C09PacketHeldItemChange(
+					potionInHotbar - 36));
+				mc.playerController.updateController();
+				sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
+					mc.thePlayer.inventoryContainer.getSlot(potionInHotbar)
+						.getStack()));
+				sendQueue.addToSendQueue(new C09PacketHeldItemChange(oldSlot));
+				sendQueue
+					.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
+						mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch,
+						mc.thePlayer.onGround));
+				
+				// reset timer
 				updateLastMS();
 			}else
-				getFromUpInv();
+				// move potion in inventory to hotbar
+				mc.playerController.windowClick(0, potionInInventory, 0, 1,
+					mc.thePlayer);
 		
 	}
 	
@@ -76,100 +111,22 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		wurst.events.remove(UpdateListener.class, this);
 	}
 	
-	private boolean isHealthPot(ItemStack stack)
+	private int findPotion(int startSlot, int endSlot)
 	{
-		if(stack == null)
-			return false;
-		if(stack.getItem() instanceof ItemPotion)
-			try
+		for(int i = startSlot; i < endSlot; i++)
+		{
+			ItemStack stack =
+				mc.thePlayer.inventoryContainer.getSlot(i).getStack();
+			if(stack != null && stack.getItem() == Items.potionitem
+				&& ItemPotion.isSplash(stack.getItemDamage()))
 			{
-				ItemPotion potion = (ItemPotion)stack.getItem();
-				if(ItemPotion.isSplash(stack.getItemDamage()))
-					for(Object o : potion.getEffects(stack))
-					{
-						PotionEffect effect = (PotionEffect)o;
-						if(effect.getPotionID() == Potion.heal.id)
-							return true;
-					}
-			}catch(NullPointerException e)
-			{
-				e.printStackTrace();
+				for(Object o : ((ItemPotion)stack.getItem()).getEffects(stack))
+				{
+					if(((PotionEffect)o).getPotionID() == Potion.heal.id)
+						return i;
+				}
 			}
-		return false;
-	}
-	
-	private boolean hasHotbarPots()
-	{
-		for(int index = 36; index < 45; index++)
-		{
-			ItemStack stack =
-				mc.thePlayer.inventoryContainer.getSlot(index).getStack();
-			if(stack != null)
-				if(isHealthPot(stack))
-					return true;
 		}
-		return false;
-	}
-	
-	private void getFromUpInv()
-	{
-		if(mc.currentScreen instanceof GuiChest)
-			return;
-		for(int index = 9; index < 36; index++)
-		{
-			ItemStack stack =
-				mc.thePlayer.inventoryContainer.getSlot(index).getStack();
-			if(stack != null)
-				if(isHealthPot(stack))
-				{
-					mc.playerController.windowClick(0, index, 0, 1,
-						mc.thePlayer);
-					break;
-				}
-		}
-	}
-	
-	private int pots()
-	{
-		int counter = 0;
-		for(int index = 9; index < 45; index++)
-		{
-			ItemStack stack =
-				mc.thePlayer.inventoryContainer.getSlot(index).getStack();
-			if(stack != null)
-				if(isHealthPot(stack))
-					counter += stack.stackSize;
-		}
-		return counter;
-	}
-	
-	private void throwPot()
-	{
-		for(int index = 36; index < 45; index++)
-		{
-			ItemStack stack =
-				mc.thePlayer.inventoryContainer.getSlot(index).getStack();
-			if(stack != null)
-				if(isHealthPot(stack))
-				{
-					int oldslot = mc.thePlayer.inventory.currentItem;
-					NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
-					sendQueue
-						.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
-							mc.thePlayer.rotationYaw, 90.0F,
-							mc.thePlayer.onGround));
-					sendQueue.addToSendQueue(new C09PacketHeldItemChange(
-						index - 36));
-					mc.playerController.updateController();
-					sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(stack));
-					sendQueue.addToSendQueue(new C09PacketHeldItemChange(
-						oldslot));
-					sendQueue
-						.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
-							mc.thePlayer.rotationYaw,
-							mc.thePlayer.rotationPitch, mc.thePlayer.onGround));
-					break;
-				}
-		}
+		return -1;
 	}
 }
