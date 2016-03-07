@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemEgg;
 import net.minecraft.item.ItemEnderPearl;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -59,7 +60,8 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		// check if item is throwable
 		Item item = stack.getItem();
 		if(!(item instanceof ItemBow || item instanceof ItemSnowball
-			|| item instanceof ItemEgg || item instanceof ItemEnderPearl))
+			|| item instanceof ItemEgg || item instanceof ItemEnderPearl || (item instanceof ItemPotion && ItemPotion
+			.isSplash(stack.getItemDamage()))))
 			return;
 		
 		boolean usingBow =
@@ -132,7 +134,8 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		RenderManager renderManager = mc.getRenderManager();
 		
 		// draw trajectory line
-		double gravity = usingBow ? 0.05D : 0.03D;
+		double gravity =
+			usingBow ? 0.05D : item instanceof ItemPotion ? 0.4D : 0.03D;
 		Vec3 playerVector =
 			new Vec3(player.posX, player.posY + player.getEyeHeight(),
 				player.posZ);
