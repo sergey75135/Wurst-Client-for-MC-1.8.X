@@ -76,7 +76,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		if(potionInInventory == -1 && potionInHotbar == -1)
 			return;
 		
-		if(hasTimePassedM(250))
+		if(hasTimePassedM(500))
 			if(potionInHotbar != -1)
 			{
 				// throw potion in hotbar
