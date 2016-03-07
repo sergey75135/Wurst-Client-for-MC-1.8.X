@@ -31,19 +31,18 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	tags = "AutoPotion,auto potion,auto splash potion")
 public class AutoSplashPotMod extends Mod implements UpdateListener
 {
-	public float normalHealth = 20F;
+	public float health = 20F;
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Health", normalHealth, 1, 10, 0.5,
-			ValueDisplay.DECIMAL)
+		settings.add(new SliderSetting("Health", health, 2, 20, 1,
+			ValueDisplay.INTEGER)
 		{
 			@Override
 			public void update()
 			{
-				normalHealth = (float)getValue() * 2;
-				
+				health = (float)getValue();
 			}
 		});
 	}
@@ -62,7 +61,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		if(pots() == 0)
 			return;
 		
-		if(mc.thePlayer.getHealth() <= normalHealth && hasTimePassedM(500l))
+		if(mc.thePlayer.getHealth() <= health && hasTimePassedM(500l))
 			if(hasHotbarPots())
 			{
 				throwPot();
