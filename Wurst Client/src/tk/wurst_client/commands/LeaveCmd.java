@@ -7,12 +7,15 @@
  */
 package tk.wurst_client.commands;
 
-import tk.wurst_client.events.ChatOutputEvent;
 import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.network.play.client.C02PacketUseEntity;
+import net.minecraft.network.play.client.C02PacketUseEntity.Action;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(help = "Leaves the current server or changes the mode of AutoLeave.",
 	name = "leave",
-	syntax = {"[chars|quit]", "mode chars|quit"})
+	syntax = {"[chars|tp|selfhurt|quit]", "mode chars|tp|selfhurt|quit"})
 public class LeaveCmd extends Cmd
 {
 	@Override
@@ -26,7 +29,7 @@ public class LeaveCmd extends Cmd
 		switch(args.length)
 		{
 			case 0:
-				disconnectWithMode(wurst.options.autoLeaveMode);
+				disconnectWithMode(wurst.mods.autoLeaveMod.getMode());
 				break;
 			case 1:
 				if(args[0].equalsIgnoreCase("taco"))
@@ -36,7 +39,7 @@ public class LeaveCmd extends Cmd
 					disconnectWithMode(parseMode(args[0]));
 				break;
 			case 2:
-				wurst.options.autoLeaveMode = parseMode(args[1]);
+				wurst.mods.autoLeaveMod.setMode(parseMode(args[1]));
 				wurst.files.saveOptions();
 				wurst.chat
 					.message("AutoLeave mode set to \"" + args[1] + "\".");
@@ -69,6 +72,14 @@ public class LeaveCmd extends Cmd
 				mc.thePlayer.sendQueue.addToSendQueue(new C01PacketChatMessage(
 					"§"));
 				break;
+			case 2:
+				mc.thePlayer.sendQueue
+					.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+						3.1e7d, 100, 3.1e7d, false));
+			case 3:
+				mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(
+					mc.thePlayer, Action.ATTACK));
+				break;
 			default:
 				break;
 		}
@@ -76,10 +87,13 @@ public class LeaveCmd extends Cmd
 	
 	private int parseMode(String input) throws SyntaxError
 	{
-		if(input.equalsIgnoreCase("quit"))
-			return 0;
-		else if(input.equalsIgnoreCase("chars"))
-			return 1;
+		// search mode by name
+		String[] modeNames = wurst.mods.autoLeaveMod.getModes();
+		for(int i = 0; i < modeNames.length; i++)
+			if(input.equals(modeNames[i].toLowerCase()))
+				return i;
+		
+		// syntax error if mode does not exist
 		syntaxError("Invalid mode: " + input);
 		return 0;
 	}

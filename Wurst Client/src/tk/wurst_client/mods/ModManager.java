@@ -1,5 +1,5 @@
 /*
- * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -42,6 +42,7 @@ public class ModManager
 	public final AutoRespawnMod autoRespawnMod = new AutoRespawnMod();
 	public final AutoSignMod autoSignMod = new AutoSignMod();
 	public final AutoSplashPotMod autoSplashPotMod = new AutoSplashPotMod();
+	public final AutoSoupMod autoSoupMod = new AutoSoupMod();
 	public final AutoSprintMod autoSprintMod = new AutoSprintMod();
 	public final AutoStealMod autoStealMod = new AutoStealMod();
 	public final AutoSwitchMod autoSwitchMod = new AutoSwitchMod();
@@ -136,6 +137,7 @@ public class ModManager
 	public final TiredMod tiredMod = new TiredMod();
 	public final TracersMod tracersMod = new TracersMod();
 	public final TpAuraMod tpAuraMod = new TpAuraMod();
+	public final TrajectoriesMod trajectoriesMod = new TrajectoriesMod();
 	public final TriggerBotMod triggerBotMod = new TriggerBotMod();
 	public final TrollPotionMod trollPotionMod = new TrollPotionMod();
 	public final TrueSightMod trueSightMod = new TrueSightMod();

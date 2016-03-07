@@ -57,6 +57,16 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	private String newsTicker;
 	private int newsWidth;
 	
+	private String noticeText = "";// = "Wurst for Minecraft 1.9 is now available.";
+	private String noticeLink = "https://www.wurst-client.tk/minecraft-1-9/";
+	
+	private int noticeWidth2;
+	private int noticeWidth1;
+	private int noticeX1;
+	private int noticeY1;
+	private int noticeX2;
+	private int noticeY2;
+	
 	public GuiWurstMainMenu()
 	{
 		super();
@@ -119,6 +129,17 @@ public class GuiWurstMainMenu extends GuiMainMenu
 					"");
 			buttonList.add(button);
 		}
+		
+		// notice
+		this.noticeWidth1 =
+			this.fontRendererObj.getStringWidth(this.noticeText);
+		this.noticeWidth2 =
+			this.fontRendererObj.getStringWidth(GuiMainMenu.field_96138_a);
+		int noticeWidth = Math.max(this.noticeWidth1, this.noticeWidth2);
+		this.noticeX1 = (this.width - noticeWidth) / 2;
+		this.noticeY1 = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
+		this.noticeX2 = this.noticeX1 + noticeWidth;
+		this.noticeY2 = this.noticeY1 + 24;
 		
 		// news
 		newsTicker = "";
@@ -449,6 +470,18 @@ public class GuiWurstMainMenu extends GuiMainMenu
 				break;
 			}
 		}
+		
+		// notice
+		if(this.noticeText != null && this.noticeText.length() > 0)
+		{
+			drawRect(this.noticeX1 - 2, this.noticeY1 - 2, this.noticeX2 + 2,
+				this.noticeY2 - 1, 1428160512);
+			this.drawString(this.fontRendererObj, this.noticeText,
+				this.noticeX1, this.noticeY1, -1);
+			this.drawString(this.fontRendererObj, GuiMainMenu.field_96138_a,
+				(this.width - this.noticeWidth2) / 2,
+				((GuiButton)this.buttonList.get(0)).yPosition - 12, -1);
+		}
 	}
 	
 	@Override
@@ -472,5 +505,11 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			MiscUtils.openLink("https://www.wurst-client.tk/news");
 			WurstClient.INSTANCE.analytics.trackPageView("/news", "Wurst News");
 		}
+		
+		// notice
+		if(this.noticeText.length() > 0 && mouseX >= this.noticeX1
+			&& mouseX <= this.noticeX2 && mouseY >= this.noticeY1
+			&& mouseY <= this.noticeY2)
+			MiscUtils.openLink(noticeLink);
 	}
 }

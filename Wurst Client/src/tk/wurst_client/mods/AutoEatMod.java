@@ -12,14 +12,22 @@ import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
+import tk.wurst_client.navigator.NavigatorItem;
 
 @Info(category = Category.MISC,
 	description = "Automatically eats food when necessary.",
-	name = "AutoEat", tags = "AutoSoup,auto eat,auto soup")
+	name = "AutoEat",
+	tags = "AutoSoup,auto eat,auto soup")
 public class AutoEatMod extends Mod implements UpdateListener
 {
 	private int oldSlot;
 	private int bestSlot;
+	
+	@Override
+	public NavigatorItem[] getSeeAlso()
+	{
+		return new NavigatorItem[]{wurst.mods.autoSoupMod};
+	}
 	
 	@Override
 	public void onEnable()

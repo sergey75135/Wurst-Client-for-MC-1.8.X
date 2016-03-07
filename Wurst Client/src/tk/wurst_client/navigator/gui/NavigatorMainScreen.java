@@ -147,7 +147,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 				String query = searchBar.getText();
 				if(query.isEmpty())
 					WurstClient.INSTANCE.navigator.analytics.trackPageView(
-						item.getType() + item.getName(), item.getName());
+						"/" + item.getType() + "/" + item.getName(), item.getName());
 				else
 					WurstClient.INSTANCE.navigator.analytics
 						.trackPageViewFromSearch(

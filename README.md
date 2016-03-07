@@ -1,40 +1,22 @@
-# Wurst Client![](https://ga-beacon.appspot.com/UA-52838431-1/GitHub/README.md?pixel)
-![Wurst Client logo](https://cloud.githubusercontent.com/assets/10100202/6868084/c764a252-d488-11e4-94cf-1daa5e398c35.png)
+# Wurst Client ![downloads counter](https://drive.google.com/uc?id=0B2YeSS9tm5zLMF9NWjNZYnNqSTA) ![Minecraft versions](https://img.shields.io/badge/Minecraft_versions-1.8_--_1.8.9-brightgreen.svg)
 
-[![downloads](https://drive.google.com/uc?id=0B2YeSS9tm5zLMF9NWjNZYnNqSTA)](https://www.wurst-client.tk/downloads/)
-[![latest release](https://img.shields.io/github/release/Wurst-Imperium/Wurst-Client.svg?label=latest%20release)](https://github.com/Wurst-Imperium/Wurst-Client/releases/latest)  
-[![mods](https://img.shields.io/badge/mods-95+-brightgreen.svg)](https://www.wurst-client.tk/features/)
-[![commands](https://img.shields.io/badge/commands-35+-brightgreen.svg)](https://www.wurst-client.tk/features/)
-[![hot, fresh & sexy](https://img.shields.io/badge/hot,%20fresh%20&%20sexy-100%-ff69e3.svg)](http://wizardhax.com/wurst)  
-[![](https://img.shields.io/github/license/Wurst-Imperium/Wurst-Client.svg)](https://github.com/Wurst-Imperium/Wurst-Client/blob/master/LICENSE)
-[![analytics](https://img.shields.io/badge/analytics-GA-blue.svg)](https://github.com/igrigorik/ga-beacon)
+[![download wurst](https://cloud.githubusercontent.com/assets/10100202/13494358/f8ba7db8-e143-11e5-8d0b-1d059cf4533a.png)](https://www.wurst-client.tk/download/)
 
-## About :information_source:
-The Wurst Client is a Hack Client for Minecraft, packed full of the latest and most exciting mods, commands and other features. All of the mods and commands are instantly deployable at any moment, through buttons, keybinds and even automatic scripts. *You rule the game!*
+## :scroll: Changelog
+Wurst gets updated weekly with new features, improvements and bugfixes. Every time we release a new update, we also make a video and a blog post showcasing the latest changes.
 
-## :sparkles::sparkles::sparkles: Special Features :sparkles::sparkles::sparkles:
-### Secure AltManager :closed_lock_with_key:
-Wurst comes packed with a full featured Alt Manager that supports both premium and cracked accounts. It's the only Alt Manager out there that uses modern encryption algorithms to ensure your alts are stored securely.
+Be sure to check out the [Update Video & Changelog](https://www.wurst-client.tk/changelog/) of the latest Wurst update.
 
-### Custom AutoBuild :construction:
-Wurst is the only client containing an AutoBuild mod that is fully customizable. You can create your very own templates using the popular JSON language or download some samples from the Wurst Client website. It also comes with 7 templates pre-installed, so you can instantly start using it.
+## :mortar_board: How to Install
+New to Minecraft hacked clients? No problem! We made a step-by-step tutorial showing you exactly how install this client. You can even choose between a video tutorial and text tutorial with pictures. [Learn More<br><br>![How to Install the Wurst Client for Minecraft](https://cloud.githubusercontent.com/assets/10100202/13548089/f7c945d8-e2e7-11e5-8309-4cc48c206ed5.jpg)](https://www.wurst-client.tk/wiki/Installation/)
 
-### Wurst-Bot :floppy_disk:
-Wurst-Bot allows you to automate everything! It can grief for you, fight for you, or just spam stuff in the chat. You can either run it from the command-line or make yourself a custom Wurst-Bot launcher in nearly any language. Since DarkBot is discontinued, this is yet another Wurst feature that you won't find in any other client.
+## :book: Tutorials
+We are working on making Wurst the most user-friendly client ever by adding more and more tutorials to our [Wurst Wiki](https://www.wurst-client.tk/wiki/Main_Page/). Here are some of the most popular tutorials that we have made so far:
 
-### Made with Love! :heart:
-Wurst is one of the few clients out there that is **not** made for the money - I actually care about this client. It is my goal to create a client that is absolutely perfect - and I work day & night to achieve this goal.
+|Session Stealer|AuthMe Cracker|Server Finder|Book Hack|
+|:---:|:---:|:---:|:---:|
+|[![Session Stealer](https://cloud.githubusercontent.com/assets/10100202/13506070/89b410c6-e17c-11e5-914f-7b3ef1f72704.jpg)](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(Session_Stealer)/)|[![AuthMe Cracker](https://cloud.githubusercontent.com/assets/10100202/13506071/89b9ea50-e17c-11e5-9c92-bf47f6bbfbcb.jpg)](https://www.wurst-client.tk/wiki/Mods/Force_OP_(AuthMeCracker)/)|[![Server Finder](https://cloud.githubusercontent.com/assets/10100202/13506069/89a48368-e17c-11e5-9984-cb3d8512db87.jpg)](https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/)|[![Book Hack](https://cloud.githubusercontent.com/assets/10100202/13506068/89864b6e-e17c-11e5-963b-02b3c355aa2a.jpg)](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(BookHack)/)|
+|[Read More](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(Session_Stealer)/)|[Read More](https://www.wurst-client.tk/wiki/Mods/Force_OP_(AuthMeCracker)/)|[Read More](https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/)|[Read More](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(BookHack)/)|
 
-So what are you waiting for? Grab a [download](https://download.wurst-client.tk/), have a play and enjoy the smooth and relaxing gameplay.
-
-## Issues :worried:
-**Update:** We now have our own feedback system and are planning to use that instead of GitHub's Issue Tracker. It is not completely finished yet, but testing it is much appreciated. https://feedback.wurst-client.tk/
-
-~~If you found a bug or you have a suggestion, use the GitHub Issue tracker. Keep the [contributing guidelines](/CONTRIBUTING.md) in mind - Issues that violate them will be removed with no mercy.~~
-
-## Contributing :computer:
-Want to help with the development? Awesome! Just click the[`fork`](https://github.com/Wurst-Imperium/Wurst-Client/fork) button, make your changes and create a Pull Request. Again, keep the [contributing guidelines](/CONTRIBUTING.md) in mind.
-
-Need inspiration on what to implement? Check out the [list of suggestions](https://github.com/Wurst-Imperium/Wurst-Client/issues?q=is%3Aopen+label%3Aaccepted+label%3Aenhancement).
-
-If you have trouble setting it up in Eclipse, read the wiki page ["How to Debug Wurst in Eclipse"](https://www.wurst-client.tk/wiki/Tutorials/How-to-Debug-Wurst-In-Eclipse/).
+## :octocat: Contributing
+You can help us to improve Wurst by submitting a [Pull Request](https://github.com/Wurst-Imperium/Wurst-Client/pulls) on our GitHub page. Read our [Contributing Tutorial](https://www.wurst-client.tk/wiki/Contributing/part1/) to learn how get it all set up.

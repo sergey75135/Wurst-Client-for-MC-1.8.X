@@ -24,7 +24,6 @@ public class OptionsManager
 	public boolean spamFont = false;
 	public boolean wurstNews = true;
 	
-	public int autoLeaveMode = 0;
 	public int modListMode = 0;
 	public int fastbreakMode = 0;
 	public int forceOPDelay = 1000;
