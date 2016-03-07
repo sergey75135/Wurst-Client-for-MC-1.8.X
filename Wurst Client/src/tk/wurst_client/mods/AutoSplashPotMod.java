@@ -61,7 +61,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		if(pots() == 0)
 			return;
 		
-		if(mc.thePlayer.getHealth() <= health && hasTimePassedM(500l))
+		if(mc.thePlayer.getHealth() < health && hasTimePassedM(200))
 			if(hasHotbarPots())
 			{
 				throwPot();
