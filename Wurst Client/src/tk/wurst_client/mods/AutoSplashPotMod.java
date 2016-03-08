@@ -29,7 +29,8 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 @Info(category = Category.COMBAT,
 	description = "Automatically throws splash healing potions if your health is below the set value.",
 	name = "AutoSplashPot",
-	tags = "AutoPotion,auto potion,auto splash potion")
+	tags = "AutoPotion,auto potion,auto splash potion",
+	tutorial = "Mods/AutoSplashPot")
 public class AutoSplashPotMod extends Mod implements UpdateListener
 {
 	public float health = 18F;
@@ -61,7 +62,8 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		updateMS();
 		
 		// check if no container is open
-		if(mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof GuiInventory))
+		if(mc.currentScreen instanceof GuiContainer
+			&& !(mc.currentScreen instanceof GuiInventory))
 			return;
 		
 		// check if health is low
