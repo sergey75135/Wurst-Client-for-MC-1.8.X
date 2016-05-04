@@ -1,6 +1,6 @@
-From 9bea66f6d76e8cd6251a011c07a7c689dcf06ced Mon Sep 17 00:00:00 2001
+From ca1b1b76b3b93e9c3d251defa1db225be4247d87 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 6 Mar 2016 21:17:07 +0100
+Date: Wed, 4 May 2016 21:12:52 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -16,7 +16,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/Minecraft.java            | 395 ++++++++++++++-------
  src/net/minecraft/client/audio/SoundManager.java   |   8 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
- .../minecraft/client/entity/EntityPlayerSP.java    | 154 ++++++--
+ .../minecraft/client/entity/EntityPlayerSP.java    | 156 ++++++--
  src/net/minecraft/client/gui/FontRenderer.java     |  49 ++-
  src/net/minecraft/client/gui/Gui.java              |   8 +-
  src/net/minecraft/client/gui/GuiButton.java        |  96 ++---
@@ -232,7 +232,7 @@ Subject: [PATCH] Wurst
  .../minecraft/world/gen/ChunkProviderServer.java   |   3 +
  src/net/minecraft/world/gen/layer/GenLayer.java    |   1 +
  .../world/gen/structure/MapGenStructure.java       |   2 +
- 228 files changed, 2618 insertions(+), 1168 deletions(-)
+ 228 files changed, 2620 insertions(+), 1168 deletions(-)
 
 diff --git a/.gitignore b/.gitignore
 index eba4a99..aad12bb 100644
@@ -1417,7 +1417,7 @@ index de9ca57..042182a 100644
  
      public float func_175156_o()
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index eefe303..132854d 100644
+index eefe303..9ad0332 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -1511,7 +1511,7 @@ index eefe303..132854d 100644
      {
          boolean var1 = this.isSprinting();
  
-@@ -184,36 +192,100 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +192,102 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
@@ -1520,13 +1520,15 @@ index eefe303..132854d 100644
 +        	float pitch;
 +        	if(EntityUtils.lookChanged)
 +        	{
-+        		yaw =  EntityUtils.yaw;
++        		yaw = EntityUtils.yaw;
 +        		pitch = EntityUtils.pitch;
-+        		EntityUtils.lookChanged = false;
 +        	}else
 +        	{
-+        		yaw =  rotationYaw;
-+        		pitch = rotationPitch;
++        		EntityUtils.yaw = EntityUtils.limitAngleChange(EntityUtils.yaw, rotationYaw, 30);
++        		EntityUtils.pitch = rotationPitch;
++        		
++        		yaw = EntityUtils.yaw;
++        		pitch = EntityUtils.pitch;
 +        	}
 +        	
              double var3 = this.posX - this.field_175172_bI;
@@ -1569,7 +1571,7 @@ index eefe303..132854d 100644
                  {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
 +                	BlinkMod.addToBlinkQueue(new C03PacketPlayer(this.onGround));
-+                }
+                 }
 +			}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
 +				&& WurstClient.INSTANCE.mods.yesCheatMod.isActive()
 +				&& !isInWater()
@@ -1604,7 +1606,7 @@ index eefe303..132854d 100644
 +                else if (var13)
 +                {
 +                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
-                 }
++                }
 +                else if (var14)
 +                {
 +                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(yaw, pitch, this.onGround));
@@ -1620,7 +1622,7 @@ index eefe303..132854d 100644
                  var13 = false;
              }
  
-@@ -255,7 +327,29 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,7 +329,29 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
@@ -1651,7 +1653,7 @@ index eefe303..132854d 100644
      }
  
      /**
-@@ -738,7 +832,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,7 +834,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
@@ -8288,7 +8290,7 @@ index 6b59121..cdf03c7 100644
  
      /**
 diff --git a/src/net/minecraft/entity/Entity.java b/src/net/minecraft/entity/Entity.java
-index 7397345..0e5ae74 100644
+index 7397345..7474634 100644
 --- a/src/net/minecraft/entity/Entity.java
 +++ b/src/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -8381,7 +8383,7 @@ index 7397345..0e5ae74 100644
 @@ -2083,9 +2110,15 @@ public abstract class Entity implements ICommandSender
       */
      public void setVelocity(double x, double y, double z)
- 	{
+     {
 -        this.motionX = x;
 -        this.motionY = y;
 -        this.motionZ = z;
@@ -8394,7 +8396,7 @@ index 7397345..0e5ae74 100644
 +		this.motionX = x * strength;
 +		this.motionY = y * strength;
 +		this.motionZ = z * strength;
- 	}
+     }
  
      public void handleHealthUpdate(byte p_70103_1_) {}
 @@ -2170,7 +2203,7 @@ public abstract class Entity implements ICommandSender

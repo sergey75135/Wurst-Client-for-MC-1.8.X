@@ -51,7 +51,13 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed) && en != null
+		if(en == null)
+		{
+			EntityUtils.lookChanged = false;
+			return;
+		}
+		EntityUtils.lookChanged = true;
+		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed)
 			&& mc.gameSettings.keyBindAttack.pressed)
 			if(mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange)
 			{
@@ -59,10 +65,13 @@ public class ClickAuraMod extends Mod implements UpdateListener
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
 				wurst.mods.blockHitMod.doBlock();
-				EntityUtils.faceEntityPacket(en);
-				mc.thePlayer.swingItem();
-				mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(
-					en, C02PacketUseEntity.Action.ATTACK));
+				if(EntityUtils.faceEntityPacket(en))
+				{
+					mc.thePlayer.swingItem();
+					mc.thePlayer.sendQueue
+						.addToSendQueue(new C02PacketUseEntity(en,
+							C02PacketUseEntity.Action.ATTACK));
+				}
 				updateLastMS();
 			}
 	}
@@ -71,5 +80,6 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		EntityUtils.lookChanged = false;
 	}
 }
