@@ -8,7 +8,7 @@
 package tk.wurst_client.mods;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.FUN,
 	description = "While this is active, other people will think you are\n"
 		+ "rolling your head around!\n" + "Looks a bit like nodding.",
-	name = "HeadRoll")
+	name = "HeadRoll",
+	tags = "head roll",
+	tutorial = "Mods/HeadRoll")
 public class HeadRollMod extends Mod implements UpdateListener
 {
 	@Override
@@ -29,7 +31,7 @@ public class HeadRollMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		mc.thePlayer.sendQueue
-			.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft
+			.addToSendQueue(new C05PacketPlayerLook(Minecraft
 				.getMinecraft().thePlayer.rotationYaw, (float)Math
 				.sin(mc.thePlayer.ticksExisted % 20 / 10d * Math.PI) * 90,
 				mc.thePlayer.onGround));

@@ -8,7 +8,7 @@
 package tk.wurst_client.mods;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.FUN,
 	description = "While this is active, other people will think you are\n"
 		+ "headless. Looks hilarious!",
-	name = "Headless")
+	name = "Headless",
+	tags = "head less",
+	tutorial = "Mods/Headless")
 public class HeadlessMod extends Mod implements UpdateListener
 {
 	@Override
@@ -29,7 +31,7 @@ public class HeadlessMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		mc.thePlayer.sendQueue
-			.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft
+			.addToSendQueue(new C05PacketPlayerLook(Minecraft
 				.getMinecraft().thePlayer.rotationYaw, 180F, Minecraft
 				.getMinecraft().thePlayer.onGround));
 	}

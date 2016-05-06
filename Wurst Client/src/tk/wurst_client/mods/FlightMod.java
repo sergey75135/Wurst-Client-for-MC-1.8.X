@@ -25,8 +25,8 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.\n"
 		+ "Bypasses MAC if AntiMAC is enabled.",
 	name = "Flight",
-	tutorial = "Mods/Flight",
-	tags = "FlyHack,fly hack,flying")
+	tags = "FlyHack,fly hack,flying",
+	tutorial = "Mods/Flight")
 public class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;

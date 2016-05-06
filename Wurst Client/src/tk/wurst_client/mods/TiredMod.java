@@ -8,7 +8,7 @@
 package tk.wurst_client.mods;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
@@ -16,7 +16,8 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.FUN,
 	description = "While this is active, other people will think you are\n"
 		+ "extremely tired and about to fall asleep!",
-	name = "Tired")
+	name = "Tired",
+	tutorial = "Mods/Tired")
 public class TiredMod extends Mod implements UpdateListener
 {
 	@Override
@@ -29,7 +30,7 @@ public class TiredMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		mc.thePlayer.sendQueue
-			.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft
+			.addToSendQueue(new C05PacketPlayerLook(Minecraft
 				.getMinecraft().thePlayer.rotationYaw,
 				mc.thePlayer.ticksExisted % 100, mc.thePlayer.onGround));
 	}

@@ -13,7 +13,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.RENDER,
 	description = "Changes the scale of the nametags so you can always\n"
 		+ "read them.",
-	name = "NameTags")
+	name = "NameTags",
+	tags = "name tags",
+	tutorial = "Mods/NameTags")
 public class NameTagsMod extends Mod
 {	
 	

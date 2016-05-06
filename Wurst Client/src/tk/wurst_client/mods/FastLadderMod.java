@@ -13,7 +13,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.MOVEMENT,
 	description = "Allows you to climb up ladders twice as fast.",
-	name = "FastLadder")
+	name = "FastLadder",
+	tags = "FastClimb, fast ladder, fast climb",
+	tutorial = "Mods/FastLadder")
 public class FastLadderMod extends Mod implements UpdateListener
 {
 	@Override
@@ -26,7 +28,7 @@ public class FastLadderMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(mc.thePlayer.isOnLadder() && mc.thePlayer.isCollidedHorizontally)
-			mc.thePlayer.motionY = 0.25;
+			mc.thePlayer.motionY = 0.2873;
 	}
 	
 	@Override

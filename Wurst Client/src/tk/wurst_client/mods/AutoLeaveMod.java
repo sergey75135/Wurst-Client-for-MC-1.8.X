@@ -20,7 +20,9 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 @Info(category = Category.COMBAT,
 	description = "Automatically leaves the server when your health is low.\n"
 		+ "The Chars, TP and SelfHurt modes can bypass CombatLog and similar plugins.",
-	name = "AutoLeave")
+	name = "AutoLeave",
+	tags = "AutoDisconnect, auto leave, auto disconnect",
+	tutorial = "Mods/AutoLeave")
 public class AutoLeaveMod extends Mod implements UpdateListener
 {
 	private int mode = 0;

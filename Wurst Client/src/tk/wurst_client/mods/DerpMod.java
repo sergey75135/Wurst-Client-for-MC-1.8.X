@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "While this is active, other people will think you are\n"
 		+ "derping around.",
 	name = "Derp",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "Retarded",
+	tutorial = "Mods/Derp")
 public class DerpMod extends Mod implements UpdateListener
 {
 	@Override
@@ -32,7 +34,7 @@ public class DerpMod extends Mod implements UpdateListener
 			mc.thePlayer.rotationYaw + (float)(Math.random() * 360 - 180);
 		float pitch = (float)(Math.random() * 180 - 90);
 		mc.thePlayer.sendQueue
-			.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(yaw, pitch,
+			.addToSendQueue(new C05PacketPlayerLook(yaw, pitch,
 				mc.thePlayer.onGround));
 	}
 	
