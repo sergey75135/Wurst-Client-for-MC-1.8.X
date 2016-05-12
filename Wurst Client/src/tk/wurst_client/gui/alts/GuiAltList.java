@@ -50,7 +50,8 @@ public class GuiAltList extends GuiWurstSlot
 			{
 				if(o1 == null || o2 == null)
 					return 0;
-				return o1.getName().compareToIgnoreCase(o2.getName());
+				return o1.getNameOrEmail().compareToIgnoreCase(
+					o2.getNameOrEmail());
 			}
 		});
 		ArrayList<Alt> newAlts = new ArrayList<Alt>();
@@ -129,8 +130,8 @@ public class GuiAltList extends GuiWurstSlot
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				GL11.glVertex2d(x - 2, y - 2);
-				GL11.glVertex2d(x - 2 + 250, y - 2);
-				GL11.glVertex2d(x - 2 + 250, y - 2 + 30);
+				GL11.glVertex2d(x - 2 + 220, y - 2);
+				GL11.glVertex2d(x - 2 + 220, y - 2 + 30);
 				GL11.glVertex2d(x - 2, y - 2 + 30);
 			}
 			GL11.glEnd();
@@ -138,12 +139,16 @@ public class GuiAltList extends GuiWurstSlot
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_CULL_FACE);
 		GL11.glDisable(GL_BLEND);
-		AltRenderer.drawAltFace(alt.getName(), x + 1, y + 1, 24, 24,
+		AltRenderer.drawAltFace(alt.getNameOrEmail(), x + 1, y + 1, 24, 24,
 			GuiAlts.altList.isSelected(GuiAltList.alts.indexOf(alt)));
-		mc.fontRendererObj.drawString("Name: " + alt.getName(), x + 31, y + 3,
-			10526880);
-		mc.fontRendererObj.drawString((alt.isCracked() ? "§8cracked"
-			: "§2premium") + (alt.isStarred() ? "§r & §estarred" : ""), x + 31,
-			y + 15, 10526880);
+		mc.fontRendererObj.drawString("Name: " + alt.getNameOrEmail(), x + 31,
+			y + 3, 10526880);
+		
+		String tags = alt.isCracked() ? "§8cracked" : "§2premium";
+		if(alt.isStarred())
+			tags += "§r, §estarred";
+		if(alt.isUnchecked())
+			tags += "§r, §cunchecked";
+		mc.fontRendererObj.drawString(tags, x + 31, y + 15, 10526880);
 	}
 }
