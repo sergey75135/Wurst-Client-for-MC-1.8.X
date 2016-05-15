@@ -58,30 +58,29 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase closestEntity =
 			EntityUtils.getClosestEntity(true, false);
-		if(closestEntity == null)
+		if(closestEntity == null
+			|| mc.thePlayer.getDistanceToEntity(closestEntity) > range)
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if(mc.thePlayer.getDistanceToEntity(closestEntity) <= range)
+		
+		if(wurst.mods.autoSwordMod.isActive())
+			AutoSwordMod.setSlot();
+		wurst.mods.criticalsMod.doCritical();
+		wurst.mods.blockHitMod.doBlock();
+		ArrayList<EntityLivingBase> entities =
+			EntityUtils.getCloseEntities(true, range);
+		for(int i = 0; i < Math.min(entities.size(), 64); i++)
 		{
-			if(wurst.mods.autoSwordMod.isActive())
-				AutoSwordMod.setSlot();
-			wurst.mods.criticalsMod.doCritical();
-			wurst.mods.blockHitMod.doBlock();
-			ArrayList<EntityLivingBase> entities =
-				EntityUtils.getCloseEntities(true, range);
-			for(int i = 0; i < Math.min(entities.size(), 64); i++)
-			{
-				EntityLivingBase en = entities.get(i);
-				EntityUtils.faceEntityPacket(en);
-				mc.thePlayer.swingItem();
-				mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(
-					en, C02PacketUseEntity.Action.ATTACK));
-			}
-			updateLastMS();
+			EntityLivingBase en = entities.get(i);
+			EntityUtils.faceEntityPacket(en);
+			mc.thePlayer.swingItem();
+			mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
+				C02PacketUseEntity.Action.ATTACK));
 		}
+		updateLastMS();
 	}
 	
 	@Override

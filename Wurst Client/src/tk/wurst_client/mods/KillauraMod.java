@@ -102,28 +102,26 @@ public class KillauraMod extends Mod implements UpdateListener
 		updateSpeedAndRange();
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(en == null)
+		if(en == null || mc.thePlayer.getDistanceToEntity(en) > realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
 		if(hasTimePassedS(realSpeed))
-			if(mc.thePlayer.getDistanceToEntity(en) <= realRange)
+		{
+			if(wurst.mods.autoSwordMod.isActive())
+				AutoSwordMod.setSlot();
+			wurst.mods.criticalsMod.doCritical();
+			wurst.mods.blockHitMod.doBlock();
+			if(EntityUtils.faceEntityPacket(en))
 			{
-				if(wurst.mods.autoSwordMod.isActive())
-					AutoSwordMod.setSlot();
-				wurst.mods.criticalsMod.doCritical();
-				wurst.mods.blockHitMod.doBlock();
-				if(EntityUtils.faceEntityPacket(en))
-				{
-					mc.thePlayer.swingItem();
-					mc.thePlayer.sendQueue
-						.addToSendQueue(new C02PacketUseEntity(en,
-							C02PacketUseEntity.Action.ATTACK));
-				}
-				updateLastMS();
+				mc.thePlayer.swingItem();
+				mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(
+					en, C02PacketUseEntity.Action.ATTACK));
 			}
+			updateLastMS();
+		}
 	}
 	
 	@Override
