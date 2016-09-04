@@ -11,11 +11,15 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
+import java.util.concurrent.Callable;
 
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ReportedException;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.commands.Cmd.SyntaxError;
 import tk.wurst_client.events.ChatOutputEvent;
@@ -127,11 +131,22 @@ public class CmdManager implements ChatOutputListener
 				}catch(Cmd.Error e)
 				{
 					WurstClient.INSTANCE.chat.error(e.getMessage());
-				}catch(Exception e)
+				}catch(Throwable e)
 				{
-					WurstClient.INSTANCE.events.handleException(e, cmd,
-						"executing", "Exact input: `" + event.getMessage()
-							+ "`");
+					CrashReport crashReport =
+						CrashReport.makeCrashReport(e, "Running Wurst command");
+					CrashReportCategory crashReportCategory =
+						crashReport.makeCategory("Affected command");
+					crashReportCategory.addCrashSectionCallable(
+						"Command input", new Callable()
+						{
+							@Override
+							public String call() throws Exception
+							{
+								return message;
+							}
+						});
+					throw new ReportedException(crashReport);
 				}
 			else
 				switch(message)

@@ -135,8 +135,7 @@ public class UIRenderer
 		ts.draw();
 		
 		// GUI render event
-		WurstClient.INSTANCE.events.fireEvent(GUIRenderEvent.class,
-			new GUIRenderEvent());
+		WurstClient.INSTANCE.events.fire(new GUIRenderEvent());
 		
 		// GL resets
 		GL11.glDepthMask(true);

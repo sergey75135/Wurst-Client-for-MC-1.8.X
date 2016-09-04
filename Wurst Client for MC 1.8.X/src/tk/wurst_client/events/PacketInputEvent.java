@@ -7,9 +7,12 @@
  */
 package tk.wurst_client.events;
 
-import net.minecraft.network.Packet;
+import java.util.ArrayList;
 
-public class PacketInputEvent extends CancellableEvent
+import net.minecraft.network.Packet;
+import tk.wurst_client.events.listeners.PacketInputListener;
+
+public class PacketInputEvent extends CancellableEvent<PacketInputListener>
 {
 	private Packet packet;
 	
@@ -29,15 +32,19 @@ public class PacketInputEvent extends CancellableEvent
 	}
 	
 	@Override
-	public String getAction()
+	public void fire(ArrayList<PacketInputListener> listeners)
 	{
-		return "receiving packet";
+		for(int i = 0; i < listeners.size(); i++)
+		{
+			listeners.get(i).onReceivedPacket(this);
+			if(isCancelled())
+				break;
+		}
 	}
-	
+
 	@Override
-	public String getComment()
+	public Class<PacketInputListener> getListenerType()
 	{
-		return "Packet: " + packet != null ? packet.getClass().getSimpleName()
-			: "null";
+		return PacketInputListener.class;
 	}
 }

@@ -7,148 +7,103 @@
  */
 package tk.wurst_client.events;
 
+import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.HashMap;
 
-import javax.swing.event.EventListenerList;
-
-import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.util.ReportedException;
 import tk.wurst_client.events.listeners.*;
-import tk.wurst_client.gui.error.GuiError;
 
 public final class EventManager
 {
-	private static final EventListenerList listenerList =
-		new EventListenerList();
+	private final HashMap<Class<? extends EventListener>, ArrayList<? extends EventListener>> listenerMap =
+		new HashMap<>();
 	
-	public synchronized <T extends Event> void fireEvent(Class<T> type, T event)
+	{
+		listenerMap.put(ChatInputListener.class,
+			new ArrayList<ChatInputListener>());
+		listenerMap.put(ChatOutputListener.class,
+			new ArrayList<ChatOutputListener>());
+		listenerMap.put(DeathListener.class, new ArrayList<DeathListener>());
+		listenerMap.put(GUIRenderListener.class,
+			new ArrayList<GUIRenderListener>());
+		listenerMap.put(LeftClickListener.class,
+			new ArrayList<LeftClickListener>());
+		listenerMap.put(PacketInputListener.class,
+			new ArrayList<PacketInputListener>());
+		listenerMap.put(RenderListener.class, new ArrayList<RenderListener>());
+		listenerMap.put(UpdateListener.class, new ArrayList<UpdateListener>());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Event> void fire(T event)
 	{
 		try
 		{
-			// TODO: A more efficient way to process the type
-			if(type == GUIRenderEvent.class)
-				fireGuiRender();
-			else if(type == RenderEvent.class)
-				fireRender();
-			else if(type == PacketInputEvent.class)
-				firePacketInput((PacketInputEvent)event);
-			else if(type == UpdateEvent.class)
-				fireUpdate();
-			else if(type == ChatInputEvent.class)
-				fireChatInput((ChatInputEvent)event);
-			else if(type == ChatOutputEvent.class)
-				fireChatOutput((ChatOutputEvent)event);
-			else if(type == LeftClickEvent.class)
-				fireLeftClick();
-			else if(type == DeathEvent.class)
-				fireDeath();
-			else
-				throw new IllegalArgumentException("Invalid event type: "
-					+ type.getName());
-		}catch(Exception e)
+			event.fire(listenerMap.get(event.getListenerType()));
+		}catch(Throwable e)
 		{
-			handleException(e, this, "processing events", "Event type: "
-				+ event.getClass().getSimpleName());
+			e.printStackTrace();
+			CrashReport crashReport =
+				CrashReport.makeCrashReport(e, "Firing Wurst event");
+			CrashReportCategory crashreportcategory =
+				crashReport.makeCategory("Affected event");
+			crashreportcategory.addCrashSectionCallable("Event class", () -> {
+				return event.getClass().getName();
+			});
+			throw new ReportedException(crashReport);
 		}
 	}
 	
-	private void fireChatInput(ChatInputEvent event)
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-		{
-			if(listeners[i] == ChatInputListener.class)
-				((ChatInputListener)listeners[i + 1]).onReceivedMessage(event);
-			if(event.isCancelled())
-				break;
-		}
-	}
-	
-	private void fireChatOutput(ChatOutputEvent event)
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-		{
-			if(listeners[i] == ChatOutputListener.class)
-				((ChatOutputListener)listeners[i + 1]).onSentMessage(event);
-			if(event.isCancelled())
-				break;
-		}
-	}
-	
-	private void fireDeath()
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-			if(listeners[i] == DeathListener.class)
-				((DeathListener)listeners[i + 1]).onDeath();
-	}
-	
-	private void fireGuiRender()
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-			if(listeners[i] == GUIRenderListener.class)
-				((GUIRenderListener)listeners[i + 1]).onRenderGUI();
-	}
-	
-	private void fireLeftClick()
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-			if(listeners[i] == LeftClickListener.class)
-				((LeftClickListener)listeners[i + 1]).onLeftClick();
-	}
-	
-	private void firePacketInput(PacketInputEvent event)
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-			if(listeners[i] == PacketInputListener.class)
-				((PacketInputListener)listeners[i + 1]).onReceivedPacket(event);
-	}
-	
-	private void fireRender()
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-			if(listeners[i] == RenderListener.class)
-				((RenderListener)listeners[i + 1]).onRender();
-	}
-	
-	private void fireUpdate()
-	{
-		Object[] listeners = listenerList.getListenerList();
-		for(int i = listeners.length - 2; i >= 0; i -= 2)
-			if(listeners[i] == UpdateListener.class)
-				((UpdateListener)listeners[i + 1]).onUpdate();
-	}
-	
-	public void handleException(final Exception e, final Object cause,
-		final String action, final String comment)
-	{
-		if(e.getMessage() != null
-			&& e.getMessage().equals(
-				"No OpenGL context found in the current thread."))
-			return;
-		add(UpdateListener.class, new UpdateListener()
-		{
-			@Override
-			public void onUpdate()
-			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiError(e, cause, action, comment));
-				remove(UpdateListener.class, this);
-			}
-		});
-	}
-	
+	@SuppressWarnings("unchecked")
 	public <T extends EventListener> void add(Class<T> type, T listener)
 	{
-		listenerList.add(type, listener);
+		try
+		{
+			((ArrayList<T>)listenerMap.get(type)).add(listener);
+		}catch(Throwable e)
+		{
+			e.printStackTrace();
+			CrashReport crashReport =
+				CrashReport.makeCrashReport(e, "Adding Wurst event listener");
+			CrashReportCategory crashreportcategory =
+				crashReport.makeCategory("Affected listener");
+			crashreportcategory.addCrashSectionCallable("Listener type",
+				() -> {
+					return type.getName();
+				});
+			crashreportcategory.addCrashSectionCallable("Listener class",
+				() -> {
+					return listener.getClass().getName();
+				});
+			throw new ReportedException(crashReport);
+		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T extends EventListener> void remove(Class<T> type, T listener)
 	{
-		listenerList.remove(type, listener);
+		try
+		{
+			((ArrayList<T>)listenerMap.get(type)).remove(listener);
+		}catch(Throwable e)
+		{
+			e.printStackTrace();
+			CrashReport crashReport =
+				CrashReport.makeCrashReport(e, "Removing Wurst event listener");
+			CrashReportCategory crashreportcategory =
+				crashReport.makeCategory("Affected listener");
+			crashreportcategory.addCrashSectionCallable("Listener type",
+				() -> {
+					return type.getName();
+				});
+			crashreportcategory.addCrashSectionCallable("Listener class",
+				() -> {
+					return listener.getClass().getName();
+				});
+			throw new ReportedException(crashReport);
+		}
 	}
 }
